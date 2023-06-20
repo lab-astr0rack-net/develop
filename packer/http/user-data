@@ -6,6 +6,11 @@ autoinstall:
   packages:
     - qemu-guest-agent
     - sudo
+  storage:
+    layout:
+      name: direct
+    swap:
+      size: 0
   user-data:
     package_upgrade: false
     timezone: America/Chicago

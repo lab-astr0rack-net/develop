@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'ubuntu-docker/**'
+      - 'packer/**'
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
         - /dev/net/tun:/dev/net/tun
     defaults:
       run:
-        working-directory: ubuntu-docker
+        working-directory: packer
     steps:
       - name: Checkout
         uses: actions/checkout@v3
