@@ -36,10 +36,11 @@ source "proxmox-iso" "ubuntu-docker" {
     
     # VM General Settings
     node = "proxmox"
-    vm_id = "998"
     vm_name = "ubuntu-docker"
+	vm_id = "998"
     template_description = "Ubuntu Server Focal Image with Docker pre-installed"
 	bios = "ovmf"
+	boot = "order=virtio0;ide2"
 
 	efi_config {
 	  efi_storage_pool = "data"
