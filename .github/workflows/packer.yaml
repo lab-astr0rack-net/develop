@@ -64,7 +64,7 @@ jobs:
 
       - name: Logout of Tailscale
         id: ts-logout
-        if: steps.ts-login.conclusion == 'success'
+        if: cancelled() == false
         run: sudo tailscale logout
 
       - name: Notify discord

@@ -40,7 +40,7 @@ source "proxmox" "ubuntu-docker" {
     vm_name = "ubuntu-docker"
     template_description = "Ubuntu Server Focal Image with Docker pre-installed"
 	bios = "ovmf"
-	efi_config = {
+	efi_config  {
 	  "efi_storage_pool": "data",
 	  "pre_enrolled_keys": true,
 	  "efi_type": "4m"
