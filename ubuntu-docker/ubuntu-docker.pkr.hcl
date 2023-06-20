@@ -27,7 +27,7 @@ variable "http_address" {
 }
 
 # Resource Definiation for the VM Template
-source "proxmox" "ubuntu-docker" {
+source "proxmox-iso" "ubuntu-docker" {
  
     # Proxmox Connection Settings
     proxmox_url = "${var.pm_api_url}"
@@ -48,7 +48,8 @@ source "proxmox" "ubuntu-docker" {
 	}
 
 	iso_download_pve = true
-    iso_url = "https://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso"
+    iso_url = "https://releases.ubuntu.com/jammy/ubuntu-22.04.2-live-server-amd64.iso"
+	iso_checksum = "5e38b55d57d94ff029719342357325ed3bda38fa80054f9330dc789cd2d43931"
     iso_storage_pool = "local"
     unmount_iso = true
 
@@ -101,7 +102,7 @@ source "proxmox" "ubuntu-docker" {
     http_port_max = 8888
 
     ssh_username = "ghactions"
-	ssh_private_key_file = "~/.ssh/id_ed25519"
+	ssh_private_key_file = "/root/.ssh/id_ed25519"
 
     # Raise the timeout, when installation takes longer
     ssh_timeout = "20m"
