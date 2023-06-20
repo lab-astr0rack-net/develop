@@ -64,7 +64,7 @@ source "proxmox" "ubuntu-docker" {
     # VM Network Settings
     network_adapters {
         model = "virtio"
-        bridge = "vmbr0"
+        bridge = "vmbr99"
         firewall = "false"
     } 
 
@@ -86,7 +86,7 @@ source "proxmox" "ubuntu-docker" {
     # PACKER Autoinstall Settings
     http_directory = "http" 
     # (Optional) Bind IP Address and Port
-    http_bind_address = ${var.http_address}
+    http_bind_address = "${var.http_address}"
     http_port_min = 8888
     http_port_max = 8888
 
