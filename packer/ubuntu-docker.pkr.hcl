@@ -38,7 +38,7 @@ source "proxmox-iso" "ubuntu-docker" {
     node = "proxmox"
     vm_name = "ubuntu-docker"
 	vm_id = "998"
-    template_description = "Ubuntu Server Focal Image with Docker pre-installed"
+    template_description = "Ubuntu Server Image with Docker pre-installed"
 	bios = "ovmf"
 	boot = "order=virtio0;ide2"
 
