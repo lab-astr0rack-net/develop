@@ -61,7 +61,7 @@ source "proxmox-iso" "ubuntu-docker" {
 
     disks {
         disk_size = "20G"
-        format = "qcow2"
+        format = "raw"
         storage_pool = "data"
         type = "virtio"
     }
