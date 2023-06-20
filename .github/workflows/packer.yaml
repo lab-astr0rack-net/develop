@@ -48,17 +48,19 @@ jobs:
 
       - name: Run `packer init`
         id: init
-        run: "packer init ubuntu-docker.pkr.hcl"
+        run: packer init ubuntu-docker.pkr.hcl
 
       - name: Run `packer validate`
         id: validate
-        run: "packer validate ubuntu-docker.pkr.hcl"
+        env:
+          PROXMOX_PASSWORD:  ${{ secrets.TF_PROXMOX_PASSWORD }}
+        run: packer validate -var "http_address=$(tailscale ip -4)" -var "pm_password=$PROXMOX_PASSWORD" ubuntu-docker.pkr.hcl
 
       - name: Packer Apply
         if: (github.ref == 'refs/heads/main' ) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         env:
           PROXMOX_PASSWORD:  ${{ secrets.TF_PROXMOX_PASSWORD }}
-        run: packer build -color=false -on-error=abort -var "http_address=$(tailscale ip -4)" ubuntu-docker.pkr.hcl
+        run: packer build -color=false -on-error=abort -var "http_address=$(tailscale ip -4)" -var "pm_password=$PROXMOX_PASSWORD" ubuntu-docker.pkr.hcl
 
       - name: Logout of Tailscale
         id: ts-logout

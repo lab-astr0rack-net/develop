@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.1.2"
+      source  = "github.com/hashicorp/proxmox"
+    }
+  }
+}
+
 variable "pm_api_url" {
     type = string
 	default = "https://proxmox.lab.astr0rack.net/api2/json"
