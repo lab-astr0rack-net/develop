@@ -35,10 +35,10 @@ jobs:
         env:
           SSH_KEY:  ${{ secrets.PACKER_SSH_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 400 ~/.ssh/id_ed25519
+          mkdir -p /root/.ssh
+          chmod 700 /root/.ssh
+          echo "$SSH_KEY" > /root/.ssh/id_ed25519
+          chmod 400 /root/.ssh/id_ed25519
 
       - name: Tailscale
         uses: tailscale/github-action@v1
