@@ -42,8 +42,8 @@ source "proxmox" "ubuntu-docker" {
 	bios = "ovmf"
 
 	efi_config {
-	  efi_storage_pool = "data",
-	  pre_enrolled_keys =  true,
+	  efi_storage_pool = "data"
+	  pre_enrolled_keys =  true
 	  efi_type =  "4m"
 	}
 
