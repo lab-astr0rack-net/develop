@@ -1,0 +1,74 @@
+name: "Packer Apply"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ubuntu-docker/**'
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: "Packer"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lab-astr0rack-net/terraform:latest
+      options: --cap-add=NET_ADMIN --cap-add=NET_RAW --dns=1.1.1.1 --dns=100.100.100.100
+      volumes:
+        - /var/lib:/var/lib
+        - /dev/net/tun:/dev/net/tun
+    defaults:
+      run:
+        working-directory: ubuntu-docker
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: latest
+
+      - name: Setup ssh key
+        env:
+          SSH_KEY:  ${{ secrets.PACKER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 400 ~/.ssh/id_ed25519
+
+      - name: Tailscale
+        uses: tailscale/github-action@v1
+        id: ts-login
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init ubuntu-docker.pkr.hcl"
+
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate ubuntu-docker.pkr.hcl"
+
+      - name: Packer Apply
+        if: (github.ref == 'refs/heads/main' ) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        env:
+          PROXMOX_PASSWORD:  ${{ secrets.TF_PROXMOX_PASSWORD }}
+        run: packer build -color=false -on-error=abort -var "http_address=$(tailscale ip -4)" ubuntu-docker.pkr.hcl
+
+      - name: Logout of Tailscale
+        id: ts-logout
+        if: steps.ts-login.conclusion == 'success'
+        run: sudo tailscale logout
+
+      - name: Notify discord
+        uses: up9cloud/action-notify@v0.4
+        if: cancelled() == false
+        env:
+          GITHUB_JOB_STATUS: ${{ job.status }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.LAB_DISCORD_WEBHOOK }}
+
