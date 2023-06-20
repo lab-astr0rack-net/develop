@@ -93,7 +93,6 @@ source "proxmox-iso" "ubuntu-docker" {
         "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
         "<f10><wait>"
     ]
-    boot = "c"
     boot_wait = "5s"
 
     # PACKER Autoinstall Settings
