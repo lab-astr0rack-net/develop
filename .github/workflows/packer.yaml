@@ -60,7 +60,7 @@ jobs:
         if: (github.ref == 'refs/heads/main' ) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         env:
           PROXMOX_PASSWORD:  ${{ secrets.TF_PROXMOX_PASSWORD }}
-        run: packer build -color=false -on-error=abort -var "http_address=$(tailscale ip -4)" -var "pm_password=$PROXMOX_PASSWORD" ubuntu-docker.pkr.hcl
+        run: packer build -force -color=false -on-error=abort -var "http_address=$(tailscale ip -4)" -var "pm_password=$PROXMOX_PASSWORD" ubuntu-docker.pkr.hcl
 
       - name: Logout of Tailscale
         id: ts-logout
