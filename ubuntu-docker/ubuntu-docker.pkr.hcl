@@ -112,7 +112,7 @@ source "proxmox-iso" "ubuntu-docker" {
 build {
 
     name = "ubuntu-docker"
-    sources = ["source.proxmox.ubuntu-docker"]
+    sources = ["source.proxmox-iso.ubuntu-docker"]
 
     # Provisioning the VM Template for Cloud-Init Integration in Proxmox #1
     provisioner "shell" {
