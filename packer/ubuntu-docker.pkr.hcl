@@ -41,6 +41,7 @@ source "proxmox-iso" "ubuntu-docker" {
     template_description = "Ubuntu Server Image with Docker pre-installed"
 	bios = "ovmf"
 	boot = "order=virtio0;ide2"
+	pool = "template"
 
 	efi_config {
 	  efi_storage_pool = "data"
