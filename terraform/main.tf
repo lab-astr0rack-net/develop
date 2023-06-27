@@ -29,7 +29,7 @@ provider "proxmox" {
 provider "dns" {
   update {
     server        = "192.168.55.3"
-    key_name      = "lab-astr0rack-key"
+    key_name      = "lab-astr0rack-key."
     key_algorithm = "hmac-sha256"
     key_secret    = var.dns_key_secret
   }
