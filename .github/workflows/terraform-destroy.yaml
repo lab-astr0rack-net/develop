@@ -84,4 +84,4 @@ jobs:
           DISCORD_WEBHOOK_URL: ${{ secrets.LAB_DISCORD_WEBHOOK }}
           DISCORD_TEMPLATE_PATH: "./template/discord.json"
           VM_USER: ${{ inputs.user }}
-          VM_HOSTNAME: "${{ inputs.user }}-${{ inputs.vm-name }}.lab.astr0rack.net"
+          VM_HOSTNAME: ${{ inputs.user }}-${{ inputs.vm-name }}.lab.astr0rack.net
