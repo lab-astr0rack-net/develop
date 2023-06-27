@@ -1,0 +1,88 @@
+name: "Terraform Apply Dev VM"
+
+on:
+  workflow_dispatch:
+    inputs:
+      vm-name:
+        description: 'Name of the VM'
+        required: true
+      user:
+        description: 'User that the VM belongs to'
+        required: true
+      ssh-key:
+        description: 'SSH Key for the VM'
+        required: false
+        default: 'sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIFEhLIyleqCaN3lEJ77AYc/q1uZlqsDJ4PKhBu0dXUa7AAAABHNzaDo= astr0n8t@primary.yubikey'
+      vm-user:
+        description: 'Username for the VM'
+        required: false
+        default: 'astr0n8t'
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lab-astr0rack-net/terraform:latest
+      options: --cap-add=NET_ADMIN --cap-add=NET_RAW --dns=1.1.1.1 --dns=100.100.100.100
+      volumes:
+        - /var/lib:/var/lib
+        - /dev/net/tun:/dev/net/tun
+    defaults:
+      run:
+        working-directory: terraform/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Tailscale
+        uses: tailscale/github-action@v1
+        id: ts-login
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Terraform Init
+        env:
+          PG_CONN_STR: ${{ secrets.TF_POSTGRES_CRED }}
+          PG_SCHEMA_NAME: "${{ github.events.inputs.user }}-${{ github.events.inputs.vm-name }}"
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Apply
+        if: (github.ref == 'refs/heads/main' ) && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        env:
+          TF_VAR_pm_password:  ${{ secrets.TF_PROXMOX_PASSWORD }}
+          TF_VAR_dns_key_secret: ${{ secrets.TF_DNS_KEY }}
+          TF_VAR_vm_name: "${{ github.events.inputs.user }}-${{ github.events.inputs.vm-name }}"
+          TF_VAR_vm_ssh_key: "${{ github.events.inputs.ssh-key }}"
+          TF_VAR_vm_user: "${{ github.events.inputs.vm-user }}"
+          PG_CONN_STR: ${{ secrets.TF_POSTGRES_CRED }}
+          PG_SCHEMA_NAME: "${{ github.events.inputs.user }}-${{ github.events.inputs.vm-name }}"
+        run: terraform apply -auto-approve -input=false
+
+      - name: Logout of Tailscale
+        id: ts-logout
+        if: steps.ts-login.conclusion == 'success'
+        run: sudo tailscale logout
+
+      - name: Notify discord
+        uses: up9cloud/action-notify@v0.4
+        if: cancelled() == false
+        env:
+          GITHUB_JOB_STATUS: ${{ job.status }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.LAB_DISCORD_WEBHOOK }}
+          GIT_COMMITTER_USERNAME: ${{ github.events.inputs.user }}
+          GIT_COMMIT_MESSAGE: "VM Spawned: ${{ github.events.inputs.user }}-${{ github.events.inputs.vm-name }}.lab.astr0rack.net"
+
+
