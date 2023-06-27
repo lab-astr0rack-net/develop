@@ -51,7 +51,7 @@ jobs:
       - name: Terraform Init
         env:
           PG_CONN_STR: ${{ secrets.TF_POSTGRES_CRED }}
-          PG_SCHEMA_NAME: "${{ inputs.user }}-${{ github.events.inputs.vm-name }}"
+          PG_SCHEMA_NAME: "${{ inputs.user }}-${{ inputs.vm-name }}"
         id: init
         run: terraform init
       
@@ -64,11 +64,11 @@ jobs:
         env:
           TF_VAR_pm_password:  ${{ secrets.TF_PROXMOX_PASSWORD }}
           TF_VAR_dns_key_secret: ${{ secrets.TF_DNS_KEY }}
-          TF_VAR_vm_name: "${{ inputs.user }}-${{ github.events.inputs.vm-name }}"
+          TF_VAR_vm_name: "${{ inputs.user }}-${{ inputs.vm-name }}"
           TF_VAR_vm_ssh_key: "${{ inputs.ssh-key }}"
           TF_VAR_vm_user: "${{ inputs.vm-user }}"
           PG_CONN_STR: ${{ secrets.TF_POSTGRES_CRED }}
-          PG_SCHEMA_NAME: "${{ inputs.user }}-${{ github.events.inputs.vm-name }}"
+          PG_SCHEMA_NAME: "${{ inputs.user }}-${{ inputs.vm-name }}"
         run: terraform destroy -auto-approve -input=false
 
       - name: Logout of Tailscale
