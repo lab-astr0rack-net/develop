@@ -18,8 +18,9 @@ resource "proxmox_vm_qemu" "dev-vm" {
   full_clone = "false"
   scsihw     = "virtio-scsi-single"
 
-  sshkeys = var.vm_ssh_key
-  ciuser  = var.vm_user
+  sshkeys   = var.vm_ssh_key
+  ciuser    = var.vm_user
+  ipconfig0 = "ip=dhcp,ip6=auto"
 
   network {
     bridge = "vmbr0"
