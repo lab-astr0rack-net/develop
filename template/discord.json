@@ -3,7 +3,7 @@
     "tts": false,
     "embeds": [
         {
-            "description": "VM hostname ${VM_HOSTNAME}",
+            "description": "VM hostname: ${VM_HOSTNAME}",
             "url": "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}",
             "color": ${STATUS_COLOR_DECIMAL},
             "footer": {
