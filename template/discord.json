@@ -12,7 +12,7 @@
             "author": {
                 "name": "${VM_USER}",
                 "url": "https://github.com/${VM_USER}",
-                "icon_url": "https://avatars.githubusercontent.com/${VM_USERNAME}"
+                "icon_url": "https://avatars.githubusercontent.com/${VM_USER}"
             }
         }
     ]
