@@ -1,0 +1,19 @@
+{
+	"content": "${GITHUB_JOB_STATUS_EMOJI} Destruction of ${VM_HOSTNAME}  **${GITHUB_JOB_STATUS}**",
+    "tts": false,
+    "embeds": [
+        {
+            "description": "VM hostname: ${VM_HOSTNAME}",
+            "url": "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}",
+            "color": ${GITHUB_JOB_STATUS_COLOR},
+            "footer": {
+                "text": "Hopefully you wanted to destroy this vm."
+            },
+            "author": {
+                "name": "${VM_USER}",
+                "url": "https://github.com/${VM_USER}",
+                "icon_url": "https://avatars.githubusercontent.com/${VM_USER}"
+            }
+        }
+    ]
+}

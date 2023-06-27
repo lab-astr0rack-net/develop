@@ -82,7 +82,7 @@ jobs:
         env:
           GITHUB_JOB_STATUS: ${{ job.status }}
           DISCORD_WEBHOOK_URL: ${{ secrets.LAB_DISCORD_WEBHOOK }}
-          DISCORD_TEMPLATE_PATH: "./template/discord.json"
+          DISCORD_TEMPLATE_PATH: "./template/apply.json"
           VM_USER: ${{ inputs.user }}
           VM_HOSTNAME: ${{ inputs.user }}-${{ inputs.vm-name }}.lab.astr0rack.net
 
