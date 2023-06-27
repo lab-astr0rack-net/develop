@@ -4,8 +4,8 @@ resource "proxmox_vm_qemu" "dev-vm" {
   qemu_os = "l26"
   bios    = "ovmf"
   pool    = "lab"
-  # Need to specify ide2 so the VM can see cloudinit CD
-  boot        = "order=scsi0;ide0"
+  # Need to specify ide0 so the VM can see cloudinit CD
+  boot        = "order=virtio0;ide0"
   target_node = var.pm_node
   onboot      = true
   startup     = "order=2"
