@@ -16,7 +16,7 @@ on:
       vm-user:
         description: 'Username for the VM'
         required: false
-        default: 'astr0n8t'
+        default: 'root'
 
 jobs:
   terraform:
