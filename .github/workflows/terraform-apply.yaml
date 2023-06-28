@@ -18,6 +18,8 @@ on:
         required: false
         default: 'root'
 
+concurrency: terraform
+
 jobs:
   terraform:
     name: "Terraform"
