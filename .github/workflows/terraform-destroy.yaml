@@ -52,7 +52,7 @@ jobs:
 
       - name: Ping vyos
         id: vyos-ping
-        run: tailscale ping vyos
+        run: tailscale ping vyos-core
 
       - name: Terraform Init
         env:
