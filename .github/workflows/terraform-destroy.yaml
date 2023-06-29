@@ -50,10 +50,6 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: Ping vyos
-        id: vyos-ping
-        run: tailscale ping vyos-core
-
       - name: Terraform Init
         env:
           PG_CONN_STR: ${{ secrets.TF_POSTGRES_CRED }}
