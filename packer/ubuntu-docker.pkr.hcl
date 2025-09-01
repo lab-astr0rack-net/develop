@@ -50,8 +50,8 @@ source "proxmox-iso" "ubuntu-docker" {
 	}
 
 	iso_download_pve = true
-    iso_url = "https://releases.ubuntu.com/jammy/ubuntu-22.04.2-live-server-amd64.iso"
-	iso_checksum = "5e38b55d57d94ff029719342357325ed3bda38fa80054f9330dc789cd2d43931"
+    iso_url = "https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso"
+	iso_checksum = "file:https://releases.ubuntu.com/jammy/SHA256SUMS"
     iso_storage_pool = "local"
     unmount_iso = true
 
